@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CASIS — Chapa 2026/2027</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Sora:wght@300;400;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #08080d;
+  --surface: #0e0e18;
+  --card: #141420;
+  --border: #222236;
+  --text: #e6e6f2;
+  --text-dim: #7e7e9a;
+  --gold: #d4a853;
+  --gold-light: #f0d48a;
+  --blue: #4a7cff;
+  --cyan: #00c9b7;
+  --coral: #ff6b5a;
+  --purple: #8b6cef;
+  --rose: #e8456b;
+}
+
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--gold) var(--bg); }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(212,168,83,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 60%, rgba(74,124,255,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(0,201,183,0.04) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M30 30h1v1h-1z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.hero-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(212,168,83,0.25);
+  padding: 5px 16px;
+  border-radius: 100px;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.2s forwards;
+  position: relative;
+}
+
+.hero h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.4s forwards;
+  position: relative;
+}
+
+.hero h1 .accent {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+  letter-spacing: 0.5em;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.55s forwards;
+  position: relative;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: var(--text-dim);
+  max-width: 600px;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 1s 0.7s forwards;
+  position: relative;
+  line-height: 1.7;
+}
+
+.hero-campus {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--text-dim);
+  margin-top: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.85s forwards;
+  position: relative;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards, pulse 2.5s 2.5s infinite;
+}
+
+.scroll-hint::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  margin: 0.6rem auto 0;
+}
+
+.section {
+  padding: 6rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section.visible { opacity: 1; transform: translateY(0); }
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.section h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.section h2 em { font-style: italic; }
+
+.section-text {
+  font-size: 1rem;
+  color: var(--text-dim);
+  max-width: 680px;
+  font-weight: 300;
+  line-height: 1.75;
+  margin-bottom: 1.2rem;
+}
+
+.quote-strip {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quote-strip.visible { opacity: 1; transform: translateY(0); }
+
+.quote-strip::before {
+  content: '\201C';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Instrument Serif', serif;
+  font-size: 14rem;
+  color: rgba(212,168,83,0.04);
+  pointer-events: none;
+}
+
+.quote-strip blockquote {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(1.15rem, 2.5vw, 1.7rem);
+  font-style: italic;
+  max-width: 720px;
+  margin: 0 auto 1rem;
+  line-height: 1.55;
+}
+
+.quote-strip cite {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  font-style: normal;
+}
+
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+
+.arch-cell {
+  background: var(--card);
+  padding: 2rem 1.5rem;
+  transition: background 0.3s;
+}
+
+.arch-cell:hover { background: #1a1a2c; }
+
+.arch-cell.span-full {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--card), rgba(212,168,83,0.04));
+}
+
+.arch-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+}
+
+.arch-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.arch-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+
+.arch-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-top: 0.3rem;
+  line-height: 1.5;
+}
+
+.thread-wrap { max-width: 850px; margin: 3rem auto 0; }
+
+.thread-item {
+  display: flex;
+  gap: 1.8rem;
+  margin-bottom: 2.2rem;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.thread-item.visible { opacity: 1; transform: translateX(0); }
+
+.thread-line { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+
+.thread-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--dot-color, var(--gold));
+  background: var(--bg);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.thread-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--dot-color, var(--gold));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.thread-item.visible .thread-dot::after { opacity: 1; }
+
+.thread-connector {
+  width: 1px;
+  flex: 1;
+  min-height: 25px;
+  background: linear-gradient(to bottom, var(--dot-color, var(--gold)), transparent);
+  opacity: 0.25;
+}
+
+.thread-content h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.thread-content p {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.thread-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 100px;
+  margin-top: 0.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--dot-color, var(--text-dim));
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin-top: 3rem;
+}
+
+.g-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem 1.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.g-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--c-accent, var(--gold));
+  box-shadow: 0 16px 50px -16px rgba(0,0,0,0.5);
+}
+
+.g-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--c-accent, var(--gold));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.g-card:hover::before { opacity: 1; }
+
+.g-card-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c-accent, var(--text-dim));
+  margin-bottom: 0.8rem;
+}
+
+.g-card h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+}
+
+.g-card p {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.dir-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+
+.dir-m {
+  background: var(--card);
+  padding: 1.4rem 1.2rem;
+  transition: background 0.3s;
+}
+
+.dir-m:hover { background: #1a1a2c; }
+
+.dir-m.lead {
+  grid-column: span 2;
+  padding: 1.8rem 1.5rem;
+  background: linear-gradient(135deg, var(--card), rgba(212,168,83,0.04));
+}
+
+.dir-cargo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.dir-nome {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+
+.dir-m.lead .dir-nome { font-size: 1.4rem; }
+
+.dir-frente {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-top: 0.2rem;
+  font-weight: 300;
+}
+
+.takeaway {
+  padding: 8rem 2rem;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.takeaway.visible { opacity: 1; transform: translateY(0); }
+
+.takeaway::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(212,168,83,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.takeaway h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.2;
+  max-width: 750px;
+  margin: 0 auto 1.5rem;
+  position: relative;
+}
+
+.takeaway h2 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.takeaway p {
+  font-size: 1rem;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto;
+  font-weight: 300;
+  position: relative;
+  line-height: 1.7;
+}
+
+footer {
+  padding: 2.5rem 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+footer p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 700px) {
+  .arch-grid { grid-template-columns: 1fr; }
+  .arch-cell.span-full { flex-direction: column; text-align: center; }
+  .dir-grid { grid-template-columns: 1fr; }
+  .dir-m.lead { grid-column: span 1; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .thread-item { gap: 1.2rem; }
+  .section { padding: 4rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-badge">Centro Acadêmico de Sistemas de Informação</div>
+  <h1>C<span class="accent">A</span>SIS</h1>
+  <div class="hero-year">GESTÃO 2026 / 2027</div>
+  <p class="hero-sub">O poder de um centro acadêmico nunca vem dos seus membros. Vem da confiança que os alunos depositam nele. Essa confiança só se constrói de uma forma: sendo a entidade que aparece quando é chamada.</p>
+  <p class="hero-campus">UTFPR — FRANCISCO BELTRÃO · SISTEMAS DE INFORMAÇÃO</p>
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<section class="section" id="missao">
+  <div class="section-label" style="color: var(--gold);">01 — DIAGNÓSTICO E MISSÃO</div>
+  <h2>De onde viemos e <em>para onde vamos</em></h2>
+  <p class="section-text">A gestão de 2025 entregou competições de programação, hackathons, hacklabs e uma caravana para o PHP Velho Oeste. Para quem participou, funcionou. Para a maioria dos alunos, o CA continuou invisível. Esse diagnóstico não é desânimo — é ponto de partida.</p>
+  <p class="section-text">A missão desta gestão é clara: ser o ponto de apoio que qualquer aluno do curso possa acionar quando precisar. Problemas com estágio, grade curricular, oportunidades no mercado, orientação sobre o curso — se o aluno trouxer, o CA lida. A garantia é simples: nenhuma demanda fica sem resposta.</p>
+</section>
+
+<div class="quote-strip">
+  <blockquote>Representar não significa apenas ocupar formalmente um espaço, mas criar canais reais de escuta, encaminhamento e participação.</blockquote>
+  <cite>— Manifesto CASIS 2026/2027</cite>
+</div>
+
+<section class="section" id="plataforma">
+  <div class="section-label" style="color: var(--cyan);">02 — A PLATAFORMA DIGITAL</div>
+  <h2>O curso é de Sistemas de Informação. <em>O CA opera como um.</em></h2>
+  <p class="section-text">O coração da gestão é um sistema operacional digital construído sobre o Notion, com automação por inteligência artificial e integração com o Gmail institucional. A plataforma não é um extra — é a demonstração de que o CA usa as ferramentas do próprio campo para resolver três problemas que matam centros acadêmicos:</p>
+
+  <div class="cards-grid">
+    <div class="g-card" style="--c-accent: var(--coral);">
+      <div class="g-card-label">Problema 01</div>
+      <h3>Desorganização</h3>
+      <p>Reuniões que não geram ação, decisões que se perdem, tarefas sem dono. A plataforma estrutura tudo: cada meta tem projetos, cada projeto tem tarefas com responsável, prazo e status.</p>
+    </div>
+    <div class="g-card" style="--c-accent: var(--blue);">
+      <div class="g-card-label">Problema 02</div>
+      <h3>Falta de transparência</h3>
+      <p>Os alunos não sabem o que o CA faz. A plataforma torna tudo visível: metas públicas com indicadores, projetos com status, gráficos de reclamações por categoria. Dados de uso público, não posse do CA.</p>
+    </div>
+    <div class="g-card" style="--c-accent: var(--gold);">
+      <div class="g-card-label">Problema 03</div>
+      <h3>Falta de dados para agir</h3>
+      <p>Saber que a comida do RU está ruim não basta — precisa de dados. Com 50 reclamações categorizadas em um mês, o CA chega na reunião com evidência quantificável. É cheque mate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="arquitetura">
+  <div class="section-label" style="color: var(--purple);">03 — ARQUITETURA DE DADOS</div>
+  <h2>6 bases interconectadas, <em>uma hierarquia clara</em></h2>
+  <p class="section-text">A plataforma opera com bases de dados relacionais no Notion. Toda ação concreta vira Tarefa ligada a um Projeto. Todo Projeto serve a uma Meta. Notas documentam contexto. Reclamações alimentam decisões com dados concretos.</p>
+
+  <div class="arch-grid">
+    <div class="arch-cell span-full">
+      <div class="arch-icon" style="background: rgba(212,168,83,0.1); color: var(--gold); border-color: rgba(212,168,83,0.2);">&#9728;&#65039;</div>
+      <div>
+        <span class="arch-label" style="color: var(--gold);">Camada estratégica</span>
+        <div class="arch-name">Metas</div>
+        <div class="arch-desc">Objetivos da gestão com prioridade, indicadores mensuráveis e progresso. Visíveis publicamente.</div>
+      </div>
+    </div>
+    <div class="arch-cell">
+      <span class="arch-label" style="color: var(--blue);">Execução</span>
+      <div class="arch-name">Projetos</div>
+      <div class="arch-desc">Iniciativas concretas com responsável, área e semestre.</div>
+    </div>
+    <div class="arch-cell">
+      <span class="arch-label" style="color: var(--cyan);">Ação</span>
+      <div class="arch-name">Tarefas</div>
+      <div class="arch-desc">Unidade mínima: quem, quando, o quê. Sempre linkada a um Projeto.</div>
+    </div>
+    <div class="arch-cell">
+      <span class="arch-label" style="color: var(--purple);">Contexto</span>
+      <div class="arch-name">Notas</div>
+      <div class="arch-desc">Atas, documentação, referências, ideias e comunicados.</div>
+    </div>
+    <div class="arch-cell">
+      <span class="arch-label" style="color: var(--coral);">Dados</span>
+      <div class="arch-name">Reclamações</div>
+      <div class="arch-desc">Alimentada automaticamente por IA. Categoria, status, visibilidade.</div>
+    </div>
+    <div class="arch-cell">
+      <span class="arch-label" style="color: var(--gold-light);">Equipe</span>
+      <div class="arch-name">Membros</div>
+      <div class="arch-desc">Diretoria com cargo, frentes, email e status.</div>
+    </div>
+    <div class="arch-cell">
+      <span class="arch-label" style="color: var(--rose);">Voz do aluno</span>
+      <div class="arch-name">Reclamações (público)</div>
+      <div class="arch-desc">Gráficos agregados acessíveis a qualquer aluno. Democracia como dado.</div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-strip">
+  <blockquote>Se houver cinquenta reclamações em um mês sobre arroz cru, o CA chega no RU com dados concretos. É cheque mate.</blockquote>
+  <cite>— Proposta da Plataforma Digital CASIS</cite>
+</div>
+
+<section class="section" id="agente">
+  <div class="section-label" style="color: var(--coral);">04 — AGENTE DE EMAIL COM IA</div>
+  <h2>Coleta automatizada, <em>zero código backend</em></h2>
+  <p class="section-text">Um agente construído exclusivamente com ferramentas da Anthropic — Claude operando com MCP servers (Gmail + Notion) — roda uma vez por dia à meia-noite, processa os emails recebidos e estrutura os dados automaticamente no Notion. Sem APIs customizadas, sem servidor dedicado. A inteligência do agente é o próprio Claude.</p>
+
+  <div class="thread-wrap">
+    <div class="thread-item" style="--dot-color: var(--blue);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Execução à meia-noite</h3>
+        <p>As aulas terminam às 23h. À meia-noite, todos os emails do dia já foram recebidos. O agente roda e processa a caixa de entrada.</p>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--cyan);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Triagem por domínio</h3>
+        <p>Só emails de @alunos.utfpr.edu.br são processados. Emails externos são marcados como lidos e ignorados — sem ruído.</p>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--purple);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Classificação automática</h3>
+        <p>O Claude classifica cada reclamação em: Restaurante Universitário, Infraestrutura, Grade Curricular, Professor, Secretaria, Biblioteca ou Outro.</p>
+        <span class="thread-tag">7 categorias mapeadas</span>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--coral);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Controle de visibilidade</h3>
+        <p>Reclamações sobre professores, assédio ou conflitos são marcadas como Internas. As demais são Públicas — acessíveis a qualquer aluno via gráficos agregados.</p>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--gold);">
+      <div class="thread-line"><div class="thread-dot"></div></div>
+      <div class="thread-content">
+        <h3>Registro no Notion</h3>
+        <p>Via MCP do Notion, cada reclamação vira uma página com todos os campos preenchidos. Sem resposta automática — a página pública serve como rastreio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="diretrizes">
+  <div class="section-label" style="color: var(--gold);">05 — DIRETRIZES DE ATUAÇÃO</div>
+  <h2>Cinco eixos, <em>uma construção coletiva</em></h2>
+  <p class="section-text">As diretrizes da gestão nascem do Manifesto Político e orientam toda a operação. Cada eixo responde a uma demanda real dos estudantes.</p>
+
+  <div class="cards-grid">
+    <div class="g-card" style="--c-accent: var(--gold);">
+      <div class="g-card-label">Representação estudantil</div>
+      <h3>Ponte entre alunos e instituição</h3>
+      <p>Canais permanentes de escuta, organização de demandas, mediação responsável com instâncias da UTFPR. A voz discente qualificada e encaminhada.</p>
+    </div>
+    <div class="g-card" style="--c-accent: var(--blue);">
+      <div class="g-card-label">Suporte ao estudante</div>
+      <h3>Contato, orientação, encaminhamento</h3>
+      <p>Site e e-mail oficial como instrumentos permanentes. Comunicação acessível, prestação de contas clara e previsibilidade sobre ações.</p>
+    </div>
+    <div class="g-card" style="--c-accent: var(--cyan);">
+      <div class="g-card-label">Pertencimento ao curso</div>
+      <h3>Identidade e vínculo</h3>
+      <p>Nova identidade visual, caravanas acadêmicas, carteirinha CASIS. Ampliar a percepção de que o CA é espaço coletivo, acessível e relevante.</p>
+    </div>
+    <div class="g-card" style="--c-accent: var(--purple);">
+      <div class="g-card-label">Valorização da formação</div>
+      <h3>Formação encontra mercado</h3>
+      <p>Canal de vagas e freelas, competições de código, hackathons, mentoria entre alunos, banco de perfis técnicos, workshops por semestre.</p>
+    </div>
+    <div class="g-card" style="--c-accent: var(--rose);">
+      <div class="g-card-label">Sustentação institucional</div>
+      <h3>Continuidade como legado</h3>
+      <p>Documentação de processos, parcerias sustentáveis, contas institucionais. A próxima gestão herda infraestrutura, não recomeça do zero.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="entregas">
+  <div class="section-label" style="color: var(--cyan);">06 — O QUE ENTREGAMOS</div>
+  <h2>Compromissos <em>verificáveis</em></h2>
+
+  <div class="thread-wrap">
+    <div class="thread-item" style="--dot-color: var(--coral);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Plataforma digital pública</h3>
+        <p>Metas, projetos e reclamações agregadas visíveis a qualquer aluno. Transparência como infraestrutura, não promessa.</p>
+        <span class="thread-tag">Infraestrutura · 2026.1</span>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--purple);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Hackathon CASIS 2026</h3>
+        <p>Competição de programação com problemas aplicados. Calendário definido no início do semestre.</p>
+        <span class="thread-tag">Ensino · 2026.2</span>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--cyan);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Semana Acadêmica SI 2026</h3>
+        <p>Programação completa — palestras, workshops, networking. Responsabilidade histórica tratada com qualidade.</p>
+        <span class="thread-tag">Eventos · 2026.2</span>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--gold);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>50 Carteirinhas CASIS ativas</h3>
+        <p>Pertencimento tangível: benefícios reais, prioridade em inscrições, descontos negociados com comércio local.</p>
+        <span class="thread-tag">Comunicação · 2026.1</span>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--blue);">
+      <div class="thread-line"><div class="thread-dot"></div><div class="thread-connector"></div></div>
+      <div class="thread-content">
+        <h3>Canal de vagas e freelas</h3>
+        <p>Gerenciado pelo CA, focado em oportunidades do contexto local. Sem algoritmo, sem concorrência com o Brasil inteiro.</p>
+        <span class="thread-tag">Valorização · permanente</span>
+      </div>
+    </div>
+    <div class="thread-item" style="--dot-color: var(--rose);">
+      <div class="thread-line"><div class="thread-dot"></div></div>
+      <div class="thread-content">
+        <h3>Caravanas para eventos do setor</h3>
+        <p>Política permanente. Mapear eventos de programação e tecnologia e estruturar participação coletiva.</p>
+        <span class="thread-tag">Eventos · permanente</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-strip">
+  <blockquote>A legitimidade do CASIS será construída pela consistência — não por discursos, mas pela recorrência de iniciativas que os alunos possam reconhecer como úteis.</blockquote>
+  <cite>— Plano de Gestão CASIS 2026/2027</cite>
+</div>
+
+<section class="section" id="operacao">
+  <div class="section-label" style="color: var(--blue);">07 — COMO OPERAMOS</div>
+  <h2>Sem reuniões semanais. <em>Sem desculpas.</em></h2>
+  <p class="section-text">Operação assíncrona por padrão. Decisões em grupo de texto, tarefas distribuídas por responsável com prazo, documentação aberta no Notion. Uma reunião mensal de alinhamento — objetiva, com pauta definida — para organizar metas em três camadas: grandes (semestre), médias (mês) e pequenas (execução rápida).</p>
+  <p class="section-text">Cada membro assume frentes de acordo com a disponibilidade real. Ninguém precisa abrir mão do TCC, do estágio ou da sexta à noite. Se o modelo exige que você abandone a vida para participar do CA, o modelo está errado.</p>
+</section>
+
+<section class="section" id="diretoria">
+  <div class="section-label" style="color: var(--gold);">08 — A DIRETORIA</div>
+  <h2>12 pessoas, <em>frentes definidas</em></h2>
+
+  <div class="dir-grid">
+    <div class="dir-m lead">
+      <span class="dir-cargo" style="color: var(--gold);">Presidente</span>
+      <div class="dir-nome">Lucas Dopfer</div>
+      <div class="dir-frente">Representação</div>
+    </div>
+    <div class="dir-m lead">
+      <span class="dir-cargo" style="color: var(--blue);">Vice-Presidente</span>
+      <div class="dir-nome">Felipe Kurt</div>
+      <div class="dir-frente">Representação · Infraestrutura</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--coral);">Secretário</span>
+      <div class="dir-nome">Dionel</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--coral);">2ª Secretária</span>
+      <div class="dir-nome">Camila Thomé</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--cyan);">Tesoureiro</span>
+      <div class="dir-nome">Nicola</div>
+      <div class="dir-frente">Financeiro</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--cyan);">2º Tesoureiro</span>
+      <div class="dir-nome">Herik</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--rose);">Dir. Comunicação</span>
+      <div class="dir-nome">Laura Belle</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--rose);">Ass. Imprensa</span>
+      <div class="dir-nome">Lucas Lobato</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--purple);">Dir. Ensino</span>
+      <div class="dir-nome">Sul</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--purple);">Ass. Ensino e Pesquisa</span>
+      <div class="dir-nome">Allif</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--gold-light);">Dir. Cultura e Social</span>
+      <div class="dir-nome">Carmen</div>
+    </div>
+    <div class="dir-m">
+      <span class="dir-cargo" style="color: var(--gold-light);">Ass. Cultura e Social</span>
+      <div class="dir-nome">Vinicius</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="legado">
+  <div class="section-label" style="color: var(--purple);">09 — CONTINUIDADE</div>
+  <h2>Esta gestão não entrega apenas um mandato. <em>Entrega uma infraestrutura.</em></h2>
+  <p class="section-text">Quando a gestão trocar, a próxima diretoria herda metas documentadas, projetos com status final, histórico de reclamações categorizado, atas registradas, contatos de membros. O agente de email continua rodando. Contas em nome da entidade — credenciais são repassadas e o sistema continua.</p>
+  <p class="section-text">O maior problema de centros acadêmicos é a ruptura entre gestões. Cada diretoria começa do zero. Essa acaba aqui.</p>
+</section>
+
+<section class="takeaway">
+  <h2>Um Centro Acadêmico que escuta, articula, encaminha e <em>fortalece.</em></h2>
+  <p>Mais do que ações isoladas — uma construção coletiva e contínua a serviço da comunidade de Sistemas de Informação da UTFPR Francisco Beltrão.</p>
+</section>
+
+<footer>
+  <p>CASIS · Centro Acadêmico de Sistemas de Informação · UTFPR Francisco Beltrão · Gestão 2026/2027</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.section, .quote-strip, .takeaway').forEach(el => observer.observe(el));
+
+const threadItems = document.querySelectorAll('.thread-item');
+const tObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const idx = Array.from(threadItems).indexOf(entry.target);
+      setTimeout(() => entry.target.classList.add('visible'), idx * 120);
+    }
+  });
+}, { threshold: 0.1 });
+threadItems.forEach(i => tObs.observe(i));
+</script>
+
+</body>
+</html>
